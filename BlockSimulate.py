@@ -1,9 +1,9 @@
-import streamlit as st
 from hashlib import sha256
 import json
 import time
 
 
+# Adapted from CS 4301 Programming Assignment 1
 class Block:
     def __init__(self, index, transactions, timestamp, previous_hash):
         self.index = index
@@ -111,9 +111,5 @@ class Blockchain:
         return new_block.index
 
 
-def main():
-    print("hello")
-
-
 if __name__ == "__main__":
-    main()
+    print("Executed")
