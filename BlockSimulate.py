@@ -1,15 +1,7 @@
+import streamlit as st
 from hashlib import sha256
 import json
 import time
-
-"""
-This code contains a skeleton for a single node Blockchain, for the purpose of simulating how a blockchain system works. 
-Important utility functions are provided. Your task is to use them to complete this skeleton for the Blockchain class.
-"""
-
-"""
-Do NOT delete comments from this file.
-"""
 
 
 class Block:
@@ -22,14 +14,14 @@ class Block:
 
     def compute_hash(self):
         """
-        A function that return the hash of the block contents.
+        A function that returns the hash of the block contents.
         """
         block_string = json.dumps(self.__dict__, sort_keys=True)
         return sha256(block_string.encode()).hexdigest()
 
 
 class Blockchain:
-    # difficulty of Proof of Work. This is the number of zeros that the hash of the block must begin with
+    # Difficulty of Proof of Work. This is the number of zeros that the hash of the block must begin with.
     difficulty = 2
 
     def __init__(self):
@@ -39,9 +31,8 @@ class Blockchain:
 
     def create_genesis_block(self):
         """
-        Create the gensis block, and append it to the chain.
-        The block has index 0, previous_hash as 0, and
-        a valid hash.
+        Create the genesis block and append it to the chain.
+        The block has index 0, previous_hash as 0, and a valid hash.
         """
         if len(self.chain) == 0:
             genesis_block = Block(0, [], time.time(), "0")
@@ -55,7 +46,7 @@ class Blockchain:
         """
         Verify that a given block is valid:
         a) Checking if the proof is valid.
-        b) The previous_hash referred in the block and the hash of latest block
+        b) The previous_hash referred in the block and the hash of the latest block
           in the chain match.
         If so, add it to the blockchain.
         """
@@ -71,7 +62,7 @@ class Blockchain:
 
     def is_valid_proof(self, block, block_hash):
         """
-        Check if block_hash is valid hash of block and satisfies
+        Check if block_hash is a valid hash of the block and satisfies
         the difficulty criteria.
         """
         return (
@@ -83,7 +74,7 @@ class Blockchain:
         """
         Implement the basic proof of work.
         Specifically, update the nonce value from its default of 0
-        until the hash of the block begins with the defined number of 0s,
+        until the hash of the block begins with the defined number of 0s.
         """
         block.nonce = 0
         computed_hash = block.compute_hash()
@@ -120,33 +111,38 @@ class Blockchain:
         return new_block.index
 
 
-if __name__ == "__main__":
-    """
-    This is where you instantiate the Blockchain class and demonstrate how it all comes together.
-    Do the following
-    - Create an instance of a Blockchain
-    - Ensure the genesis block is created for the blockchain, and display this.
-    - "Mine": Run the mine function to see if your proof of work implementation is working as expected
-    - Show the final blockchain after "mining" once.
-    """
+def main():
+    st.title("Blockchain Electronic Voting System")
+
     blockchain = Blockchain()
 
-    # print block chain to show creation of genesis block using transactions as an identifier
-    print("Blockchain after instantiation (only genesis) ", end="")
-    for link in blockchain.chain:
-        print(link.transactions)
+    page = st.sidebar.radio(
+        "Navigation", ["Authenticate", "Register", "Vote", "View Blockchain"]
+    )
 
-    # add five new transactions
-    blockchain.add_new_transaction("$500")
-    blockchain.add_new_transaction("-$200")
-    blockchain.add_new_transaction("+$1500")
-    blockchain.add_new_transaction("-$100")
-    blockchain.add_new_transaction("$2500")
+    if page == "Authenticate":
+        st.header("Authenticate")
+        st.write("Authentication page content goes here...")
 
-    # mine block (irl every 10 minutes on average)
-    blockchain.mine()
+    elif page == "Register":
+        st.header("Register")
+        st.write("Registration page content goes here...")
 
-    # print contents of chain using transactions as a indicator of idenity
-    print("Blockchain after mining ", end="")
-    for link in blockchain.chain:
-        print(link.transactions, end="")
+    elif page == "Vote":
+        st.header("Vote")
+        st.write("Voting page content goes here...")
+
+    elif page == "View Blockchain":
+        st.header("View Blockchain")
+        st.write("Blockchain page content goes here...")
+        for block in blockchain.chain:
+            st.write("Index:", block.index)
+            st.write("Transactions:", block.transactions)
+            st.write("Timestamp:", block.timestamp)
+            st.write("Previous Hash:", block.previous_hash)
+            st.write("Nonce:", block.nonce)
+            st.write("---")
+
+
+if __name__ == "__main__":
+    main()
