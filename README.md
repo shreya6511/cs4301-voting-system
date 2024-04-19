@@ -2,4 +2,4 @@
 
 To run install dependencies from Pipfile 
 
-To view application `streamlit run app.py`
+To view application `streamlit run register.py`
