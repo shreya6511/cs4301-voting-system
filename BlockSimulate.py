@@ -2,6 +2,9 @@ from hashlib import sha256
 import json
 import time
 
+votesDict = {'Candidate A': 0, 
+             'Candidate B': 0,
+             'Candidate C': 0}
 
 # Adapted from CS 4301 Programming Assignment 1
 class Block:
